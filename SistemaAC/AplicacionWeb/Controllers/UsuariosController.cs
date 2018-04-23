@@ -25,6 +25,20 @@ namespace SistemaAC.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
+        /// <summary>
+        /// Método para obtener los datos de un usuario específico
+        /// </summary>
+        /// <param name="id">Identificador de usuario</param>
+        /// <returns>Retorna una lista con los datos de todo el usuario</returns>
+        public async Task<List<ApplicationUser>> GetUsuario (string id)
+        {
+            List<ApplicationUser> usuario = new List<ApplicationUser>();
+            //Obtener el registro de la base de datos que coincide con el identificador que se recibe como parámetro.
+            var appUsuario = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
+            usuario.Add(appUsuario);
+            return usuario;
+        }
+
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(string id)
         {
