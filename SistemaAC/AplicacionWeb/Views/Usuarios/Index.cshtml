@@ -35,7 +35,7 @@
 						@Html.DisplayFor(modelItem => item.PhoneNumber)
 					</td>
 					<td>
-						<a class="btn btn-success" data-toggle="modal" data-target="#myModal">Editar</a> |
+						<a class="btn btn-success" data-toggle="modal" data-target="#modalEditar" onclick="getUsuario('@item.Id','Usuarios/GetUsuario')">Editar</a> |
 						<a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
 						<a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
 					</td>
@@ -44,7 +44,7 @@
 		</tbody>
 	</table>
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
