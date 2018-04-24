@@ -7,22 +7,60 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AplicacionWeb.Data;
 using AplicacionWeb.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace SistemaAC.Controllers
 {
     public class UsuariosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        UserManager<ApplicationUser> _userManager;
+        RoleManager<IdentityRole> _roleManager;
+        UsuarioRole _usuarioRole;
+        public List<SelectListItem> usuarioRole;
 
-        public UsuariosController(ApplicationDbContext context)
+        public UsuariosController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _usuarioRole = new UsuarioRole();
+            usuarioRole = new List<SelectListItem>();
         }
 
         // GET: Usuarios
+        /// <summary>
+        /// Método para obtener un listado de todos los usuarios
+        /// </summary>
+        /// <returns>Retorna una vista</returns>
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var ID = "";
+            //Objeto list que depende de la clase Usuario
+            List<Usuario> usuario = new List<Usuario>();
+            /* Obtengo todos los registros de la tabla donde almaceno
+             * los usuarios y lo almaceno en el objeto
+             */
+            var appUsuario = await _context.Users.ToListAsync();
+            /* Con una estructura de control iterativa foreach recorremos
+             * todos los valores del objeto appUsuario
+             */
+             foreach ( var Data in appUsuario)
+            {
+                ID = Data.Id;
+                usuarioRole = await _usuarioRole.GetRole(_userManager, _roleManager, ID);
+
+                usuario.Add(new Usuario()
+                {
+                    Id = Data.Id,
+                    UserName = Data.UserName,
+                    PhoneNumber = Data.PhoneNumber,
+                    Email = Data.Email,
+                    Role = usuarioRole[0].Text
+                });
+            }
+            //return View(await _context.Users.ToListAsync());
+            return View(usuario.ToList());
         }
 
         /// <summary>
@@ -39,6 +77,26 @@ namespace SistemaAC.Controllers
             return usuario;
         }
 
+        /// <summary>
+        /// Metodo para editar un usuario
+        /// </summary>
+        /// <param name="id">Identificador</param>
+        /// <param name="userName">Nombre de usuario</param>
+        /// <param name="email">Email</param>
+        /// <param name="phoneNumber">Telefono</param>
+        /// <param name="accessFailedCount"></param>
+        /// <param name="concurrencyStamp"></param>
+        /// <param name="emailConfirmed"></param>
+        /// <param name="lookoutEnabled"></param>
+        /// <param name="lookoutEnd"></param>
+        /// <param name="normalizedEmail"></param>
+        /// <param name="normalizedUserName"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="phoneNumberConfirmed"></param>
+        /// <param name="securityStamp"></param>
+        /// <param name="twoFactorEnabled"></param>
+        /// <param name="applicationUser"></param>
+        /// <returns>Retorna una variable de tipo string indicando si se han guardado los cambios o no</returns>
         public async Task<string> EditUsuario(string id, string userName, string email, string phoneNumber, int accessFailedCount, string concurrencyStamp, bool emailConfirmed, bool lookoutEnabled, DateTimeOffset lookoutEnd, string normalizedEmail, string normalizedUserName, string passwordHash, bool phoneNumberConfirmed, string securityStamp, bool twoFactorEnabled, ApplicationUser applicationUser)
         {
             var resp = "";
