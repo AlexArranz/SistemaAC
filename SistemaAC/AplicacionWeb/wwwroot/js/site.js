@@ -37,11 +37,35 @@ var twoFactorEnabled;
 
 function mostrarUsuario(response) {
     items = response;
+    j = 0;
+    for (var i = 0; i < 3; i++) {
+        var x = document.getElementById('Select');
+        x.remove(i);
+    }
+
     $.each(items, function (index, val) {
         $('input[name=Id]').val(val.id);
         $('input[name=UserName]').val(val.userName);
         $('input[name=Email]').val(val.email);
-        $('input[name="PhoneNumber]').val(val.phoneNumber);
+        $('input[name=PhoneNumber]').val(val.phoneNumber);
+        document.getElementById('Select').options[0] = new Option(val.role, val.roleId)
+    });
+}
+
+var j = 0;
+function getRoles(action) {
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: {},
+        success: function (response) {
+            if (j == 0) {
+                for (var i = 0; i < response.length; i++) {
+                    document.getElementById('Select').options[i] = new Option(response[i].text, response[i].value);
+                }
+                j = 1
+            }
+        }
     });
 }
 

@@ -66,6 +66,12 @@
 							<input readonly name="UserName" id="UserName" class="form-control" />
 						</div>
 						<div class="form-group">
+							<label for="Roles" class="control-label">Roles</label>
+							<select id="Select" name="Select" class="form-control" onclick="getRoles('Usuarios/GetRoles');">
+								<option value="0">Seleccione un rol</option>
+							</select>
+						</div>
+						<div class="form-group">
 							<label for="Email" class="control-label">Email</label>
 							<input name="Email" id="Email" class="form-control" />
 						</div>
