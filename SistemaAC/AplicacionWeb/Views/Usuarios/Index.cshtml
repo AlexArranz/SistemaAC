@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AplicacionWeb.Models.ApplicationUser>
+﻿@model IEnumerable<AplicacionWeb.Models.Usuario>
 	@{
 		ViewData["Title"] = "Usuarios";
 	}
@@ -11,6 +11,9 @@
 			<tr>
 				<th>
 					Usuario
+				</th>
+				<th>
+					Rol
 				</th>
 				<th>
 					Email
@@ -27,6 +30,9 @@
 				<tr>
 					<td>
 						@Html.DisplayFor(modelItem => item.UserName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Role)
 					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.Email)
