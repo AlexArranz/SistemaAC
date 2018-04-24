@@ -59,7 +59,7 @@ namespace SistemaAC.Controllers
                     Role = usuarioRole[0].Text
                 });
             }
-            //return View(await _context.Users.ToListAsync());
+            // return View(await _context.Users.ToListAsync());
             return View(usuario.ToList());
         }
 
@@ -68,17 +68,50 @@ namespace SistemaAC.Controllers
         /// </summary>
         /// <param name="id">Identificador de usuario</param>
         /// <returns>Retorna una lista con los datos de todo el usuario</returns>
-        public async Task<List<ApplicationUser>> GetUsuario(string id)
+        public async Task<List<Usuario>> GetUsuario(string id)
         {
-            List<ApplicationUser> usuario = new List<ApplicationUser>();
-            //Obtener el registro de la base de datos que coincide con el identificador que se recibe como parámetro.
+            // Declaración de un objeto list que depende de la clase usuario
+            List<Usuario> usuario = new List<Usuario>();
+            //Obtengo el usuario mediante el identificador que recibo como parámetro
             var appUsuario = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
-            usuario.Add(appUsuario);
+            // Obtengo el rol correspondiente para ese usuario llamando al método getRole usando el parámetro ID.
+            usuarioRole = await _usuarioRole.GetRole(_userManager, _roleManager, id);
+
+            usuario.Add(new Usuario()
+            {
+                Id = appUsuario.Id,
+                UserName = appUsuario.UserName,
+                PhoneNumber = appUsuario.PhoneNumber,
+                Email = appUsuario.Email,
+                Role = usuarioRole[0].Text,
+                RoleID = usuarioRole[0].Value,
+                AccessFailedCount = appUsuario.AccessFailedCount,
+                ConcurrencyStamp = appUsuario.ConcurrencyStamp,
+                EmailConfirmed = appUsuario.EmailConfirmed,
+                LockoutEnabled = appUsuario.LockoutEnabled,
+                LockoutEnd = appUsuario.LockoutEnd,
+                NormalizedEmail = appUsuario.NormalizedEmail,
+                NormalizedUserName = appUsuario.NormalizedUserName,
+                PasswordHash = appUsuario.PasswordHash,
+                PhoneNumberConfirmed = appUsuario.PhoneNumberConfirmed,
+                SecurityStamp = appUsuario.SecurityStamp,
+                TwoFactorEnabled = appUsuario.TwoFactorEnabled,
+            });
             return usuario;
         }
 
+        public async Task<List<SelectListItem>> GetRoles()
+        {
+            //Creamos un onjeto llamado rolesLista
+            List<SelectListItem> rolesLista = new List<SelectListItem>();
+            //Llenamos el objeto con todos los roles de la base de datos
+            rolesLista = _usuarioRole.Roles(_roleManager);
+
+            return rolesLista;
+        }
+
         /// <summary>
-        /// Metodo para editar un usuario
+        /// Método para editar un usuario
         /// </summary>
         /// <param name="id">Identificador</param>
         /// <param name="userName">Nombre de usuario</param>

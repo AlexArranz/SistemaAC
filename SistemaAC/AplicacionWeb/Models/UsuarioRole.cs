@@ -45,5 +45,19 @@ namespace AplicacionWeb.Models
             //Retornamos el objeto usuarioRoles
             return usuarioRoles;
         }
+
+        public List<SelectListItem> Roles(RoleManager<IdentityRole> roleManager)
+        {
+            var roles = roleManager.Roles.ToList();
+            foreach(var Data in roles)
+            {
+                usuarioRoles.Add(new SelectListItem()
+                {
+                    Value = Data.Id,
+                    Text = Data.Name
+                });
+            }
+            return usuarioRoles;
+        }
     }
 }
