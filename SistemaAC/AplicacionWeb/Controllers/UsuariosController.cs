@@ -77,6 +77,26 @@ namespace SistemaAC.Controllers
             return usuario;
         }
 
+        /// <summary>
+        /// Metodo para editar un usuario
+        /// </summary>
+        /// <param name="id">Identificador</param>
+        /// <param name="userName">Nombre de usuario</param>
+        /// <param name="email">Email</param>
+        /// <param name="phoneNumber">Telefono</param>
+        /// <param name="accessFailedCount"></param>
+        /// <param name="concurrencyStamp"></param>
+        /// <param name="emailConfirmed"></param>
+        /// <param name="lookoutEnabled"></param>
+        /// <param name="lookoutEnd"></param>
+        /// <param name="normalizedEmail"></param>
+        /// <param name="normalizedUserName"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="phoneNumberConfirmed"></param>
+        /// <param name="securityStamp"></param>
+        /// <param name="twoFactorEnabled"></param>
+        /// <param name="applicationUser"></param>
+        /// <returns>Retorna una variable de tipo string indicando si se han guardado los cambios o no</returns>
         public async Task<string> EditUsuario(string id, string userName, string email, string phoneNumber, int accessFailedCount, string concurrencyStamp, bool emailConfirmed, bool lookoutEnabled, DateTimeOffset lookoutEnd, string normalizedEmail, string normalizedUserName, string passwordHash, bool phoneNumberConfirmed, string securityStamp, bool twoFactorEnabled, ApplicationUser applicationUser)
         {
             var resp = "";
