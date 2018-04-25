@@ -45,7 +45,7 @@ namespace SistemaAC.Controllers
             /* Con una estructura de control iterativa foreach recorremos
              * todos los valores del objeto appUsuario
              */
-             foreach ( var Data in appUsuario)
+            foreach (var Data in appUsuario)
             {
                 ID = Data.Id;
                 usuarioRole = await _usuarioRole.GetRole(_userManager, _roleManager, ID);
@@ -130,7 +130,7 @@ namespace SistemaAC.Controllers
         /// <param name="twoFactorEnabled"></param>
         /// <param name="applicationUser"></param>
         /// <returns>Retorna una variable de tipo string indicando si se han guardado los cambios o no</returns>
-        public async Task<string> EditUsuario(string id, string userName, string email, string phoneNumber, int accessFailedCount, string concurrencyStamp, bool emailConfirmed, bool lookoutEnabled, DateTimeOffset lookoutEnd, string normalizedEmail, string normalizedUserName, string passwordHash, bool phoneNumberConfirmed, string securityStamp, bool twoFactorEnabled, ApplicationUser applicationUser)
+        public async Task<string> EditUsuario(string id, string userName, string email, string phoneNumber, int accessFailedCount, string concurrencyStamp, bool emailConfirmed, bool lookoutEnabled, DateTimeOffset lookoutEnd, string normalizedEmail, string normalizedUserName, string passwordHash, bool phoneNumberConfirmed, string securityStamp, bool twoFactorEnabled, string selectRole, ApplicationUser applicationUser)
         {
             var resp = "";
             try
@@ -157,6 +157,24 @@ namespace SistemaAC.Controllers
                 // Actualizar los datos
                 _context.Update(applicationUser);
                 await _context.SaveChangesAsync();
+
+                //Obtenemos los datos del usuario
+                var usuario = await _userManager.FindByIdAsync(id);
+
+                usuarioRole = await _usuarioRole.GetRole(_userManager, _roleManager, id);
+
+                if (usuarioRole[0].Text != "No Role")
+                {
+                    await _userManager.RemoveFromRoleAsync(usuario, usuarioRole[0].Text);
+                }
+                if (selectRole == "No Role")
+                {
+                    selectRole = "Usuario";
+                }
+
+                // Ahora si almacenamos el rol
+                var resultado = await _userManager.AddToRoleAsync(usuario, selectRole);
+
                 resp = "Save";
             }
             catch
