@@ -50,6 +50,12 @@ function mostrarUsuario(response) {
         $('input[name=Email]').val(val.email);
         $('input[name=PhoneNumber]').val(val.phoneNumber);
         $('select[name=Select]').val(val.roleID);
+
+        //Mostrar los detalles del usuario
+        $("#dUserName").text(val.userName);
+        $("#dEmail").text(val.email);
+        $("#dRole").text(val.role);
+        $("#dPhoneNumber").text(val.phoneNumber);
     });
 }
 
@@ -104,4 +110,8 @@ function editarUsuario(action) {
             }
         }
     });
+}
+
+function ocultarDetalleUsuario() {
+    $("#modalDetalle").modal("hide");
 }
