@@ -43,7 +43,7 @@ var twoFactorEnabled;
 
 function mostrarUsuario(response) {
     items = response;
-   
+
     $.each(items, function (index, val) {
         $('input[name=Id]').val(val.id);
         $('input[name=UserName]').val(val.userName);
@@ -56,6 +56,10 @@ function mostrarUsuario(response) {
         $("#dEmail").text(val.email);
         $("#dRole").text(val.role);
         $("#dPhoneNumber").text(val.phoneNumber);
+
+        //Mostrar los datos del usuario que deseo eliminar
+        $("#eUsuario").text(val.email);
+        $('input[name=eIdUsuario]').val(val.id);
     });
 }
 
@@ -65,11 +69,11 @@ function getRoles(action) {
         type: "POST",
         url: action,
         data: {},
-        success: function (response) {            
+        success: function (response) {
             document.getElementById('Select').options[0] = new Option('No Role', null);
             for (var i = 0; i < response.length; i++) {
-                document.getElementById('Select').options[i+1] = new Option(response[i].text, response[i].value);
-            }            
+                document.getElementById('Select').options[i + 1] = new Option(response[i].text, response[i].value);
+            }
         }
     });
 }
@@ -114,4 +118,22 @@ function editarUsuario(action) {
 
 function ocultarDetalleUsuario() {
     $("#modalDetalle").modal("hide");
+}
+
+function eliminarUsuario(action) {
+    var id = $('input[name=eIdUsuario]')[0].value;
+
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: { id },
+        success: function (response) {
+            if (response === "Delete") {
+                window.location.href = "Usuarios";
+            }
+            else {
+                alert("No se puede eliminar el usuario");
+            }
+        }
+    });
 }
