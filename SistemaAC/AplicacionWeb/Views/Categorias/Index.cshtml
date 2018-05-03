@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-info" data-toggle="modal" data-target="#modalAgregarCategoria">Crear categoría</a>
 </p>
 <table class="table">
     <thead>
@@ -45,3 +45,50 @@
 }
     </tbody>
 </table>
+<!-- Modal -->
+<div class="modal fade" id="modalAgregarCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Agregar categoría</h4>
+			</div>
+			<div class="modal-body">
+				<form asp-action="">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<label for="Nombre" class="col-md-2 control-label">Nombre</label>
+							<div class="col-md-10">
+								<input for="Nombre" id="Nombre" placeholder="Nombre" name="Nombre" class="form-control" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="Descripcion" class="col-md-2 control-label">Descripción</label>
+							<div class="col-md-10">
+								<input for="Descripcion" id="Descipcion" placeholder="Descipción" name="Descipcion" class="form-control" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="Estado" class="col-md-2 control-label">Estado</label>
+							<div class="col-md-10">
+								<select id="Estado" class="form-control">
+									<option value="0">Seleccione un estado</option>
+									<option value="true">Activo</option>
+									<option value="false">No activo</option>
+								</select>
+							</div>
+						</div>
+						<label id="mensaje" class="col-md-2 control-label"></label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				<button type="button" class=" btn btn-primary">Guardar cambios</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
