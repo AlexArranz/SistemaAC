@@ -178,3 +178,13 @@ function crearUsuario(action) {
     }
 
 }
+
+var agregarCategoria = () => {
+    var nombre = document.getElementById("Nombre").value;
+    var descripcion = document.getElementById("Descripcion").value;
+    var estadoControl = document.getElementById("Estado");
+    var estado = estadoControl.options[estadoControl.selectedIndex].value;
+    var action = "Categorias/crearCategoria";
+    var categoria = new Categorias(nombre, descripcion, estado, action);
+    categoria.agregarCategoria();
+}
