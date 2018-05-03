@@ -2,6 +2,9 @@
 $('#modalEditar').on('shown.bs.modal', function () {
     $('#myInput').focus()
 })
+$('#modalAgregarCategoria').on('shown.bs.modal', function () {
+    $('#Nombre').focus()
+})
 
 $(function () {
     getRoles($('#urlroles').val());
