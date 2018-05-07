@@ -68,16 +68,22 @@ function mostrarUsuario(response) {
 
 
 function getRoles(action) {
+    if (action === '' || action === undefined) {
+        return;
+    }
+
     $.ajax({
         type: "POST",
         url: action,
         data: {},
         success: function (response) {
-            document.getElementById('Select').options[0] = new Option('No Role', null);
-            for (var i = 0; i < response.length; i++) {
-                document.getElementById('Select').options[i + 1] = new Option(response[i].text, response[i].value);
-                document.getElementById('SelectNuevo').options[i + 1] = new Option(response[i].text, response[i].value);
-            }
+            if ($("#Select").length > 0) {
+                document.getElementById('Select').options[0] = new Option('No Role', null);
+                for (var i = 0; i < response.length; i++) {
+                    document.getElementById('Select').options[i + 1] = new Option(response[i].text, response[i].value);
+                    document.getElementById('SelectNuevo').options[i + 1] = new Option(response[i].text, response[i].value);
+                }
+            }            
         }
     });
 }
@@ -184,7 +190,7 @@ var agregarCategoria = () => {
     var descripcion = document.getElementById("Descripcion").value;
     var estadoControl = document.getElementById("Estado");
     var estado = estadoControl.options[estadoControl.selectedIndex].value;
-    var action = "Categorias/crearCategoria";
+    var action = "Categorias/agregarCategoria";
     var categoria = new Categorias(nombre, descripcion, estado, action);
     categoria.agregarCategoria();
 }
