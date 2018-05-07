@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AplicacionWeb.Data;
 using AplicacionWeb.Models;
+using AplicacionWeb.ModelsClass;
+using Microsoft.AspNetCore.Identity;
 
 namespace AplicacionWeb.Controllers
 {
     public class CategoriasController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private CategoriaModels _categoriaModels;
 
         public CategoriasController(ApplicationDbContext context)
         {
             _context = context;
+            _categoriaModels = new CategoriaModels(_context);
         }
 
         /// <summary>
@@ -52,6 +56,17 @@ namespace AplicacionWeb.Controllers
             return View(categoria);
         }
 
+        /// <summary>
+        /// Metodo que recibe datos mediante ajax y lo envia a un metodo para insertar esos datos
+        /// </summary>
+        /// <param name="nombre">Nombre de la categoria</param>
+        /// <param name="descripcion">Descripcion de la categoria</param>
+        /// <param name="estado">Estado de la categoria</param>
+        /// <returns>Objeto de la clase IdentityError</returns>
+        public List<IdentityError> agregarCategoria(string nombre, string descripcion, string estado)
+        {
+            return _categoriaModels.agregarCategoria(nombre, descripcion, estado);
+        }
         /// <summary>
         /// Muestra la vista para poder crear una nueva categoria
         /// </summary>

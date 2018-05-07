@@ -17,7 +17,6 @@ class Categorias {
                 if (this.estado == "0") {
                     document.getElementById("mensaje").innerHTML = "Seleccione un estado";
                 } else {
-                    alert(this.nombre);
                     var nombre = this.nombre;
                     var descripcion = this.descripcion;
                     var estado = this.estado;
@@ -28,7 +27,7 @@ class Categorias {
                         url: action,
                         data: { nombre, descripcion, estado },
                         success: (response) => {
-
+                            window.location.href = "Categorias";
                         }
                     });
                 }
