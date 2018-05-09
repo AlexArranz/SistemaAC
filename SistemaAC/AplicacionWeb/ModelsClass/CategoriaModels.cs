@@ -38,5 +38,29 @@ namespace AplicacionWeb.ModelsClass
             });
             return errorList;
         }
+
+        public List<object[]> filtrarDatos(int numPagina, string valor)
+        {
+            int count = 0, cant, numRegistros = 0, inicio = 0, reg_por_pagina = 1;
+            int can_paginas, pagina;
+            string dataFilter = "", paginador = "", Estado = null;
+            List<object[]> data = new List<object[]>();
+            IEnumerable<Categoria> query;
+            var categorias = _context.Categoria.OrderBy(c => c.Nombre).ToList();
+            numRegistros = categorias.Count;
+            inicio = (numPagina - 1) * reg_por_pagina;
+            can_paginas = (numRegistros / reg_por_pagina);
+            if(valor == "null")
+            {
+                query = categorias.Skip(inicio).Take(reg_por_pagina);
+            }
+            else
+            {
+                query = categorias.Where(c => c.Nombre.StartsWith(valor) ||c.Descripcion.StartsWith(valor)).Skip(inicio).Take(reg_por_pagina);
+            }
+            //Almacena la cantidad de objetos que tiene el objeto query
+            cant = query.Count();
+            return data;
+        }
     }
 }
