@@ -67,36 +67,6 @@ namespace AplicacionWeb.Controllers
         {
             return _categoriaModels.agregarCategoria(nombre, descripcion, estado);
         }
-        /// <summary>
-        /// Muestra la vista para poder crear una nueva categoria
-        /// </summary>
-        /// <returns>Retorna la vista crear</returns>
-        // GET: Categorias/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Metodo para poder guardar la nueva categoria con los datos proporcionados
-        /// </summary>
-        /// <param name="categoria">Objeto categoria</param>
-        /// <returns>Retorna la vista Index si se agrega satisfactoriamente la categoria</returns>
-        // POST: Categorias/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoriaID,Nombre,Descripcion,Estado")] Categoria categoria)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(categoria);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(categoria);
-        }
 
         /// <summary>
         /// Muestra la vista con los detalles de la categoria que se desea editar

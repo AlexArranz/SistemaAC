@@ -194,3 +194,10 @@ var agregarCategoria = () => {
     var categoria = new Categorias(nombre, descripcion, estado, action);
     categoria.agregarCategoria();
 }
+
+filtrarDatos = (numPagina) => {
+    var valor = document.getElementById("filtrar").value;
+    var action = 'Categorias/filtrarDatos';
+    var categoria = new Categorias(valor, "", "", action);
+    categoria.filtrarDatos(numPagina);
+}
