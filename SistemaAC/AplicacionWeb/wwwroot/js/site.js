@@ -205,3 +205,11 @@ filtrarDatos = (numPagina) => {
     var categoria = new Categorias(valor, "", "", action);
     categoria.filtrarDatos(numPagina);
 }
+
+var idCategoria;
+var editarEstado = (id) => {
+    idCategoria = id;
+    var action = 'Categorias/getCategorias';
+    var categoria = new Categorias("", "", "", action);
+    categoria.getCategoria(id);
+}

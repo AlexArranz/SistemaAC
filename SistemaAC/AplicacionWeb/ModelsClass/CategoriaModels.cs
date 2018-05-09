@@ -64,11 +64,11 @@ namespace AplicacionWeb.ModelsClass
             {
                 if (item.Estado == true)
                 {
-                    Estado = "<a class='btn btn-success'>Activo</a>";
+                    Estado = "<a data-toggle='modal' data-target='#ModalEstado' onclick='editarEstado(" + item.CategoriaID + ")' class='btn btn-success'>Activo</a>";
                 }
                 else
                 {
-                    Estado = "<a class='btn btn-danger'>No activo</a>";
+                    Estado = "<a data-toggle='modal' data-target='#ModalEstado' onclick='editarEstado(" + item.CategoriaID + ")' class='btn btn-danger'>No activo</a>";
                 }
                 dataFilter += 
                   "<tr>" +
@@ -85,6 +85,11 @@ namespace AplicacionWeb.ModelsClass
             data.Add(dataObj);
 
             return data;
+        }
+
+        public List<Categoria> GetCategorias(int id)
+        {
+            return _context.Categoria.Where(c => c.CategoriaID == id).ToList();
         }
     }
 }

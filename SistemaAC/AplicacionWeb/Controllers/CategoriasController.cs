@@ -38,6 +38,11 @@ namespace AplicacionWeb.Controllers
             return _categoriaModels.filtrarDatos(numPagina, valor);
         }
 
+        public List<Categoria> GetCategorias(int id)
+        {
+            return _categoriaModels.GetCategorias(id);
+        }
+
         /// <summary>
         /// Muestra los detalles del elemento categoria seleccionado
         /// </summary>
