@@ -41,7 +41,7 @@ namespace AplicacionWeb.ModelsClass
 
         public List<object[]> filtrarDatos(int numPagina, string valor)
         {
-            int count = 0, cant, numRegistros = 0, inicio = 0, reg_por_pagina = 1;
+            int count = 0, cant, numRegistros = 0, inicio = 0, reg_por_pagina = 5;
             int can_paginas, pagina;
             string dataFilter = "", paginador = "", Estado = null;
             List<object[]> data = new List<object[]>();
@@ -56,10 +56,34 @@ namespace AplicacionWeb.ModelsClass
             }
             else
             {
-                query = categorias.Where(c => c.Nombre.StartsWith(valor) ||c.Descripcion.StartsWith(valor)).Skip(inicio).Take(reg_por_pagina);
+                query = categorias.Where(c => c.Nombre.Contains(valor) ||c.Descripcion.Contains(valor)).Skip(inicio).Take(reg_por_pagina);
             }
             //Almacena la cantidad de objetos que tiene el objeto query
             cant = query.Count();
+            foreach (var item in query)
+            {
+                if (item.Estado == true)
+                {
+                    Estado = "<a class='btn btn-success'>Activo</a>";
+                }
+                else
+                {
+                    Estado = "<a class='btn btn-danger'>No activo</a>";
+                }
+                dataFilter += 
+                  "<tr>" +
+                    "<td>" + item.Nombre + "</td>" +
+                    "<td>" + item.Descripcion + "</td>" +
+                    "<td>" + Estado + "</td>" +
+                    "<td>" +
+                    "<a data-toggle='modal' data-target='#myModal' class='btn btn-success'>Editar</a>    |" +
+                    "    <a data-toggle='modal' data-target='#myModal13' class='btn btn-danger'>Borrar</a>" +
+                    "</td>" +
+                  "</tr>";
+            }
+            object[] dataObj = { dataFilter, paginador };
+            data.Add(dataObj);
+
             return data;
         }
     }

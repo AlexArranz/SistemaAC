@@ -33,6 +33,11 @@ namespace AplicacionWeb.Controllers
             return View(await _context.Categoria.ToListAsync());
         }
 
+        public List<object[]> filtrarDatos(int numPagina, string valor)
+        {
+            return _categoriaModels.filtrarDatos(numPagina, valor);
+        }
+
         /// <summary>
         /// Muestra los detalles del elemento categoria seleccionado
         /// </summary>

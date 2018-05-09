@@ -185,6 +185,10 @@ function crearUsuario(action) {
 
 }
 
+$().ready(() => {
+    filtrarDatos(1);
+});
+
 var agregarCategoria = () => {
     var nombre = document.getElementById("Nombre").value;
     var descripcion = document.getElementById("Descripcion").value;
