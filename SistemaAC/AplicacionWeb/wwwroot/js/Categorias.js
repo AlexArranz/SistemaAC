@@ -69,8 +69,43 @@ class Categorias {
             url: action,
             data: { id },
             success: (response) => {
+                if (response[0].estado) {
+                    document.getElementById("titleCategoria").innerHTML = "¿Está seguro de desactivar la categoría " + response[0].nombre + "?";
+                } else {
+                    document.getElementById("titleCategoria").innerHTML = "¿Está seguro de habilitar la categoría " + response[0].nombre + "?";
+                }
                 localStorage.setItem("categoria", JSON.stringify(response));
             }
+        });
+    }
+
+    editarCategoria(id, funcion) {
+        var nombre = null;
+        var descripcion = null;
+        var estado = null;
+        var action = null;
+        switch (funcion) {
+            case "estado":
+                var response = JSON.parse(localStorage.getItem("categoria"));
+                nombre = response[0].nombre;
+                descripcion = response[0].descripcion;
+                estado = response[0].estado;
+                localStorage.removeItem("categoria");
+                break;
+            default:
+        }
+    }
+
+    editar(id, nombre, descripcion, estado, funcion) {
+        var action = this.action;
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { id, nombre, descripcion, estado, funcion },
+            success: (response) => {
+                this.restablecer();
+            }
+
         })
     }
 
