@@ -1,11 +1,12 @@
 ﻿var localStorage = window.localStorage;
 
 class Categorias {
-    constructor(nombre, descripcion, estado, action) {
+    constructor(nombre, descripcion, estado, action, urlFiltrar) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.estado = estado;
         this.action = action;
+        this.urlFiltrar = urlFiltrar;
     }
 
     agregarCategoria() {
@@ -45,7 +46,7 @@ class Categorias {
 
     filtrarDatos(numPagina) {
         var valor = this.nombre;
-        var action = this.action;
+        var action = this.urlFiltrar;
         if (valor == "") {
             valor = "null";
         }
@@ -91,6 +92,7 @@ class Categorias {
                 descripcion = response[0].descripcion;
                 estado = response[0].estado;
                 localStorage.removeItem("categoria");
+                this.editar(id, nombre, descripcion, estado, funcion);
                 break;
             default:
         }
@@ -106,7 +108,7 @@ class Categorias {
                 this.restablecer();
             }
 
-        })
+        });
     }
 
     restablecer() {
@@ -115,5 +117,7 @@ class Categorias {
         document.getElementById("Mensaje").innerHTML = "";
         document.getElementById("Estado").selectedIndex = 0;
         $('#modalAgregarCategoria').modal('hide');
+        $('#ModalEstado').modal('hide');
+        this.filtrarDatos(1);
     }
 }

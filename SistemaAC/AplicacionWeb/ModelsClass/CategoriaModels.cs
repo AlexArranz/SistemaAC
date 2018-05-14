@@ -11,6 +11,7 @@ namespace AplicacionWeb.ModelsClass
     public class CategoriaModels
     {
         private ApplicationDbContext _context;
+        private Boolean estados;
 
         public CategoriaModels(ApplicationDbContext context)
         {
@@ -87,9 +88,66 @@ namespace AplicacionWeb.ModelsClass
             return data;
         }
 
+        public IEnumerable<Categoria> FiltrarDatosParcial(int numPagina, string valor)
+        {
+            int numRegistros = 0, inicio = 0, reg_por_pagina = 5;
+            int can_paginas;
+            List<object[]> data = new List<object[]>();
+            IEnumerable<Categoria> query;
+            var categorias = _context.Categoria.OrderBy(c => c.Nombre).ToList();
+            numRegistros = categorias.Count;
+            inicio = (numPagina - 1) * reg_por_pagina;
+            can_paginas = (numRegistros / reg_por_pagina);
+            if (valor == "null")
+            {
+                query = categorias.Skip(inicio).Take(reg_por_pagina);
+            }
+            else
+            {
+                query = categorias.Where(c => c.Nombre.Contains(valor) || c.Descripcion.Contains(valor)).Skip(inicio).Take(reg_por_pagina);
+            }
+
+            return query;
+        }
+
         public List<Categoria> GetCategorias(int id)
         {
             return _context.Categoria.Where(c => c.CategoriaID == id).ToList();
+        }
+
+        public List<IdentityError> EditarCategoria(int idCategoria, string nombre, string descripcion, Boolean estado, string funcion)
+        {
+            var errorList = new List<IdentityError>();
+            switch (funcion)
+            {
+                case "estado":
+                    if (estado)
+                    {
+                        //Actual estado de la categoria : Activo
+                        estados = false;
+                    }
+                    else
+                    {
+                        //Actual estado de la categoria : No activo
+                        estados = true;
+                    }
+                    var categoria = new Categoria()
+                    {
+                        CategoriaID = idCategoria,
+                        Nombre = nombre,
+                        Descripcion = descripcion,
+                        Estado = estados
+                    };
+                    _context.Update(categoria);
+                    _context.SaveChanges();
+                    break;
+            }
+            errorList.Add(new IdentityError
+            {
+                Code = "1",
+                Description = "Save"
+            });
+            return errorList;
         }
     }
 }

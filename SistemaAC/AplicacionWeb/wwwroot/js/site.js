@@ -202,7 +202,7 @@ var agregarCategoria = () => {
 filtrarDatos = (numPagina) => {
     var valor = document.getElementById("filtrar").value;
     var action = 'Categorias/filtrarDatos';
-    var categoria = new Categorias(valor, "", "", action);
+    var categoria = new Categorias(valor, "", "", action,action);
     categoria.filtrarDatos(numPagina);
 }
 
@@ -216,6 +216,7 @@ var editarEstado = (id) => {
 
 var editarCategoria = () => {
     var action = 'Categorias/editarCategoria';
-    var categoria = new Categorias("", "", "", action);
+    var urlFiltrar = 'Categorias/filtrarDatos';
+    var categoria = new Categorias("", "", "", action, urlFiltrar);
     categoria.editarCategoria(idCategoria, "estado");
 }
