@@ -1,0 +1,36 @@
+﻿@model IEnumerable<AplicacionWeb.Models.Categoria>
+
+@{
+	string cssBoton;
+	string textoBoton;
+}
+
+@foreach (var item in Model)
+{
+	
+		if (@item.Estado == true)
+		{
+			cssBoton = "btn-success";
+			textoBoton = "Activo";
+		}
+		else
+		{
+			cssBoton = "btn-danger";
+			textoBoton = "No Activo";
+		}
+	
+	<tr>
+		<td> @item.Nombre </td>
+		<td> @item.Descripcion </td>
+		<td>
+			<a data-toggle='modal' 
+			   data-target='#ModalEstado' 
+			   onclick='editarEstado(@item.CategoriaID)' 
+			   class='btn @cssBoton'>@textoBoton</a>
+		</td>
+		<td>
+			<a data-toggle='modal' data-target='#myModal' class='btn btn-success'>Editar</a>	 |
+			<a data-toggle='modal' data-target='#myModal13' class='btn btn-danger'>Borrar</a>
+		</td>
+	</tr>
+}

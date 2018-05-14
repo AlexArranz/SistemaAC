@@ -9,6 +9,10 @@ using AplicacionWeb.Data;
 using AplicacionWeb.Models;
 using AplicacionWeb.ModelsClass;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.Extensions.Options;
 
 namespace AplicacionWeb.Controllers
 {
@@ -41,6 +45,11 @@ namespace AplicacionWeb.Controllers
         public List<Categoria> GetCategorias(int id)
         {
             return _categoriaModels.GetCategorias(id);
+        }
+
+        public List<IdentityError> editarCategoria(int id, string nombre, string descripcion, Boolean estado, string funcion)
+        {
+            return _categoriaModels.EditarCategoria(id, nombre, descripcion, estado, funcion);
         }
 
         /// <summary>
@@ -179,9 +188,47 @@ namespace AplicacionWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #region Internos de la clase
+
         private bool CategoriaExists(int id)
         {
             return _context.Categoria.Any(e => e.CategoriaID == id);
         }
+
+        protected async Task<string> RenderViewAsync(string viewName, object model)
+        {
+            // Localizacion de la vista
+            var actionContext = new ActionContext(HttpContext, RouteData, ControllerContext.ActionDescriptor, ModelState);
+
+            ICompositeViewEngine viewEngine = HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
+
+            var viewEngineResult = viewEngine.FindView(actionContext, viewName, isMainPage: false);
+
+            if (!viewEngineResult.Success)
+            {
+                var searchedLocations = string.Join(", ", viewEngineResult.SearchedLocations);
+                throw new InvalidOperationException(
+                    $"Couldn't find view '{viewName}', " +
+                    $"searched locations: [{searchedLocations}]");
+            }
+
+            // Vista encontrada, ahora se renderiza...
+            using (var sw = new StringWriter())
+            {
+                // Se prepara el contexto de la vista
+                var viewData = new ViewDataDictionary(ViewData) { Model = model };
+                HtmlHelperOptions helperOptions = HttpContext.RequestServices
+                        .GetService(typeof(HtmlHelperOptions)) as HtmlHelperOptions;
+
+                var viewContext = new ViewContext(
+                        actionContext, viewEngineResult.View, viewData, TempData, sw, helperOptions);
+
+                // Retorna la vista
+                await viewEngineResult.View.RenderAsync(viewContext);
+                return sw.ToString();
+            }
+        }
+
+        #endregion
     }
 }
